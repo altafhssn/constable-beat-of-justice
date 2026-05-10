@@ -1,0 +1,33 @@
+; Engine configuration file.
+; Configures for Godot 4.6
+
+[application]
+config/name="Constable: Beat of Justice"
+config/description="A Hades-inspired roguelite where you play a khaki-clad Indian policeman descending 25 floors of corruption."
+run/main_scene="res://scenes/Main.tscn"
+config/features=PackedStringArray("4.6")
+config/icon="res://assets/ui/icon.png"
+config/splash/bg_color=Color(0.102, 0.118, 0.196, 1)
+config/splash/bg_color.true=Color(0.102, 0.118, 0.196, 1)
+
+[display]
+window/size/viewport_width=480
+window/size/viewport_height=800
+window/size/mode=0
+window/size/always_on_top=false
+window/dpi/allow_hidpi=true
+window/per_pixel_transparency/allowed=false
+
+[rendering]
+renderer/rendering_method=gl_compatibility
+textures/vram_compression/import_etc2_astc=true
+
+[input]
+ui_accept={ "deadzone": 0.5, "events": [ Object(InputEventKey, "resource_local_to_scene": false, "resource_name": "", "device": -1, "window_id": 0, "alt_pressed": false, "shift_pressed": false, "ctrl_pressed": false, "meta_pressed": false, "pressed": false, "keycode": 4194309, "physical_keycode": 4194309, "key_label": 0, "unicode": 0, "location": 0, "echo": false, "script": null) ] }
+ui_cancel={ "deadzone": 0.5, "events": [ Object(InputEventKey, "resource_local_to_scene": false, "resource_name": "", "device": -1, "window_id": 0, "alt_pressed": false, "shift_pressed": false, "ctrl_pressed": false, "meta_pressed": false, "pressed": false, "keycode": 4194305, "physical_keycode": 4194305, "key_label": 0, "unicode": 0, "location": 0, "echo": false, "script": null) ] }
+
+[mobile]
+screen/use_immersive_mode=true
+
+[filesystem]
+import/blender/enabled=false

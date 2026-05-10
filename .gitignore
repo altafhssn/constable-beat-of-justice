@@ -1,0 +1,18 @@
+# Godot-specific
+.godot/
+*.import
+*.translation
+import/
+export/
+
+# OS junk
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Editor
+.idea/
+.vscode/
+*.code-workspace
