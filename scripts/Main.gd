@@ -92,7 +92,7 @@ func start_game():
 	camera = Camera2D.new()
 	camera.name = "GameCamera"
 	camera.anchor_mode = Camera2D.ANCHOR_MODE_DRAG_CENTER
-	camera.zoom = Vector2(1.8, 1.8)
+	camera.zoom = Vector2(4.0, 4.0)
 	camera.position_smoothing_enabled = true
 	camera.position_smoothing_speed = 8.0
 	add_child(camera)
