@@ -1,33 +1,77 @@
 ; Engine configuration file.
-; Configures for Godot 4.6
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
 
 [application]
+
 config/name="Constable: Beat of Justice"
-config/description="A Hades-inspired roguelite where you play a khaki-clad Indian policeman descending 25 floors of corruption."
+config/description="An Indian police roguelike"
 run/main_scene="res://scenes/Main.tscn"
-config/features=PackedStringArray("4.6")
+config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://assets/ui/icon.png"
-config/splash/bg_color=Color(0.102, 0.118, 0.196, 1)
-config/splash/bg_color.true=Color(0.102, 0.118, 0.196, 1)
+
+[autoload]
+
+SpriteRegistry="*res://scripts/SpriteRegistry.gd"
 
 [display]
-window/size/viewport_width=480
-window/size/viewport_height=800
-window/size/mode=0
-window/size/always_on_top=false
-window/dpi/allow_hidpi=true
-window/per_pixel_transparency/allowed=false
 
-[rendering]
-renderer/rendering_method=gl_compatibility
-textures/vram_compression/import_etc2_astc=true
+window/size/viewport_width=640
+window/size/viewport_height=640
+window/size/window_width_override=640
+window/size/window_height_override=640
+window/stretch/mode="canvas_items"
+window/size/min_width=320
+window/size/min_height=320
 
 [input]
-ui_accept={ "deadzone": 0.5, "events": [ Object(InputEventKey, "resource_local_to_scene": false, "resource_name": "", "device": -1, "window_id": 0, "alt_pressed": false, "shift_pressed": false, "ctrl_pressed": false, "meta_pressed": false, "pressed": false, "keycode": 4194309, "physical_keycode": 4194309, "key_label": 0, "unicode": 0, "location": 0, "echo": false, "script": null) ] }
-ui_cancel={ "deadzone": 0.5, "events": [ Object(InputEventKey, "resource_local_to_scene": false, "resource_name": "", "device": -1, "window_id": 0, "alt_pressed": false, "shift_pressed": false, "ctrl_pressed": false, "meta_pressed": false, "pressed": false, "keycode": 4194305, "physical_keycode": 4194305, "key_label": 0, "unicode": 0, "location": 0, "echo": false, "script": null) ] }
 
-[mobile]
-screen/use_immersive_mode=true
+move_up={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":87,"physical_keycode":0,"key_label":0,"unicode":119,"location":0,"echo":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":4194320,"physical_keycode":0,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+]
+}
+move_down={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":83,"physical_keycode":0,"key_label":0,"unicode":115,"location":0,"echo":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":4194322,"physical_keycode":0,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+]
+}
+move_left={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":65,"physical_keycode":0,"key_label":0,"unicode":97,"location":0,"echo":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":4194321,"physical_keycode":0,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+]
+}
+move_right={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":68,"physical_keycode":0,"key_label":0,"unicode":100,"location":0,"echo":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":4194323,"physical_keycode":0,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+]
+}
+action_interact={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":82,"physical_keycode":0,"key_label":0,"unicode":114,"location":0,"echo":false,"script":null)
+]
+}
+action_wait={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":46,"physical_keycode":0,"key_label":0,"unicode":46,"location":0,"echo":false,"script":null)
+]
+}
+action_inventory={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":73,"physical_keycode":0,"key_label":0,"unicode":105,"location":0,"echo":false,"script":null)
+]
+}
 
-[filesystem]
-import/blender/enabled=false
+[rendering]
+
+textures/canvas_textures/default_texture_filter=0

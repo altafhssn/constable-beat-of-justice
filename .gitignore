@@ -1,18 +1,17 @@
-# Godot-specific
+# Godot
 .godot/
-*.import
-*.translation
-import/
-export/
 
-# OS junk
+# Godot auto-generated files
+*.uid
+*.import
+
+# OS
 .DS_Store
 Thumbs.db
-*.swp
-*.swo
-*~
 
-# Editor
-.idea/
-.vscode/
-*.code-workspace
+# Python
+__pycache__/
+*.pyc
+
+# Backups
+*.bak

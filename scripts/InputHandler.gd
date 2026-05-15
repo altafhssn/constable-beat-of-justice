@@ -1,3 +1,4 @@
+class_name InputHandler
 extends Node
 
 # Handles both keyboard and touch input
@@ -23,16 +24,35 @@ var action_button_ids: Dictionary = {}
 func _ready():
 	process_mode = Node.PROCESS_MODE_PAUSABLE
 
+func _process(_delta):
+	# Poll keyboard state every frame (required for continuous movement)
+	poll_keyboard()
+
 func _input(event):
-	# Keyboard input (desktop)
+	# Keyboard action keys (press/release events, not continuous)
 	if event is InputEventKey:
-		handle_keyboard(event)
+		# Action keys: only fire on initial press, not echo repeats
+		if event.pressed and not event.echo:
+			match event.keycode:
+				KEY_SPACE:
+					action_pressed.emit(ActionType.DASH, move_vector)
+				KEY_E:
+					action_pressed.emit(ActionType.INTERACT, move_vector)
+				KEY_I:
+					action_pressed.emit(ActionType.INVENTORY, move_vector)
+				KEY_Q:
+					action_pressed.emit(ActionType.SPECIAL, move_vector)
+	
+	# Mouse click attack
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		action_pressed.emit(ActionType.ATTACK, move_vector)
 	
 	# Touch input (mobile)
 	if event is InputEventScreenTouch or event is InputEventScreenDrag:
 		handle_touch(event)
 
-func handle_keyboard(event: InputEventKey):
+func poll_keyboard():
+	# Polled every frame — this is what makes WASD movement work continuously
 	var wasd = Vector2.ZERO
 	if Input.is_key_pressed(KEY_W) or Input.is_key_pressed(KEY_UP):
 		wasd.y -= 1
@@ -48,18 +68,6 @@ func handle_keyboard(event: InputEventKey):
 	
 	if keyboard_move_vector != last_keyboard:
 		update_move_vector()
-	
-	# Action keys
-	if event.pressed and not event.echo:
-		match event.keycode:
-			KEY_SPACE:
-				action_pressed.emit(ActionType.DASH, move_vector)
-			KEY_E:
-				action_pressed.emit(ActionType.INTERACT, move_vector)
-			KEY_I:
-				action_pressed.emit(ActionType.INVENTORY, move_vector)
-			KEY_Q:
-				action_pressed.emit(ActionType.SPECIAL, move_vector)
 
 func handle_touch(event):
 	# Simple touch input: tap left half = move toward tap, tap right = attack

@@ -1,3 +1,4 @@
+class_name Civilian
 extends CharacterBody2D
 
 # Civilian types
@@ -5,6 +6,24 @@ var civilian_type: String = "chai_wala"
 var is_rescued: bool = false
 var rescue_buff: String = ""
 var dialogue_lines: Array = []
+
+# Sprite
+var sprite_node: Sprite2D
+
+func _ready():
+	sprite_node = Sprite2D.new()
+	sprite_node.centered = true
+	sprite_node.scale = Vector2(1.5, 1.5)
+	add_child(sprite_node)
+	
+	var col = CollisionShape2D.new()
+	var shape = RectangleShape2D.new()
+	shape.size = Vector2(24, 24)
+	col.shape = shape
+	add_child(col)
+	
+	# Set placeholder sprite
+	sprite_node.texture = SpriteRegistry.get_civilian_sprite(civilian_type)
 
 func init(data: Dictionary):
 	civilian_type = data.get("type", "chai_wala")

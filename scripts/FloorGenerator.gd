@@ -1,3 +1,4 @@
+class_name FloorGenerator
 extends RefCounted
 
 # Generates a floor with rooms, corridors, enemies, civilians, items
@@ -34,10 +35,20 @@ func generate(floor_num: int) -> Dictionary:
 	# Place player start
 	var player_start = Vector2(TILE_SIZE * 2, TILE_SIZE * 2)
 	
+	# Check if this is a boss floor (every 5th floor)
+	var is_boss_floor = (floor_num == 1 or floor_num % 5 == 0)
+	var boss_room_center = Vector2.ZERO
+	
 	# Place stairs (end of floor)
 	var stairs_pos = find_farthest_room_center(tile_grid)
 	if stairs_pos != Vector2.ZERO:
-		tile_grid[int(stairs_pos.y / TILE_SIZE)][int(stairs_pos.x / TILE_SIZE)] = TileType.STAIRS
+		var sx = int(stairs_pos.x / TILE_SIZE)
+		var sy = int(stairs_pos.y / TILE_SIZE)
+		if sy >= 0 and sy < tile_grid.size() and sx >= 0 and sx < tile_grid[sy].size():
+			tile_grid[sy][sx] = TileType.STAIRS
+			# On boss floors, boss spawns near stairs
+			if is_boss_floor:
+				boss_room_center = stairs_pos
 	
 	# Generate enemies
 	var enemies = generate_enemies(floor_num, tile_grid)
@@ -49,11 +60,13 @@ func generate(floor_num: int) -> Dictionary:
 	var items = generate_items(floor_num, tile_grid)
 	
 	return {
-		"tilemap": create_tilemap(tile_grid),
+		"grid": tile_grid,
 		"player_start": player_start,
 		"enemies": enemies,
 		"civilians": civilians,
-		"items": items
+		"items": items,
+		"is_boss_floor": is_boss_floor,
+		"boss_position": boss_room_center
 	}
 
 func generate_rooms() -> Array:
@@ -70,6 +83,10 @@ func generate_rooms() -> Array:
 	for i in range(num_rooms):
 		var w = 4 + randi() % 5
 		var h = 4 + randi() % 5
+		# Last room is bigger (for boss floor)
+		if i == num_rooms - 1:
+			w = max(w, 7)
+			h = max(h, 7)
 		var x = 1 + randi() % (MAP_WIDTH - w - 2)
 		var y = 1 + randi() % (MAP_HEIGHT - h - 2)
 		
@@ -94,23 +111,28 @@ func generate_rooms() -> Array:
 		for i in range(rooms.size() - 1):
 			var r1 = rooms[i]
 			var r2 = rooms[i + 1]
-			var cx = int((r1.position.x + r1.size.x / 2 + r2.position.x + r2.size.x / 2) / 2)
-			var cy = int((r1.position.y + r1.size.y / 2 + r2.position.y + r2.size.y / 2) / 2)
 			
 			var x1 = int(r1.position.x + r1.size.x / 2)
 			var y1 = int(r1.position.y + r1.size.y / 2)
 			var x2 = int(r2.position.x + r2.size.x / 2)
 			var y2 = int(r2.position.y + r2.size.y / 2)
 			
+			# Track door positions for room entrances
+			var door_positions = []
+			
 			# Horizontal then vertical corridor
 			for x in range(min(x1, x2), max(x1, x2) + 1):
 				if y1 >= 0 and y1 < MAP_HEIGHT and x >= 0 and x < MAP_WIDTH:
 					if grid[y1][x] == TileType.EMPTY:
 						grid[y1][x] = TileType.FLOOR
+					elif grid[y1][x] == TileType.WALL:
+						grid[y1][x] = TileType.DOOR
 			for y in range(min(y1, y2), max(y1, y2) + 1):
 				if y >= 0 and y < MAP_HEIGHT and x2 >= 0 and x2 < MAP_WIDTH:
 					if grid[y][x2] == TileType.EMPTY:
 						grid[y][x2] = TileType.FLOOR
+					elif grid[y][x2] == TileType.WALL:
+						grid[y][x2] = TileType.DOOR
 	
 	return grid
 
@@ -207,7 +229,5 @@ func get_enemy_type_for_floor(floor_num: int) -> int:
 	else:
 		return [5, 6, 8][randi() % 3]  # Elite mix
 
-func create_tilemap(grid: Array):
-	# For now, return a placeholder — actual TileMap node creation
-	# This will be set up properly when we have actual tile assets
-	return null
+# Tilemap rendering is now handled by FloorRenderer.gd
+# create_tilemap() has been replaced by FloorRenderer.build_from_grid()
